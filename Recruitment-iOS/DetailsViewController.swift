@@ -12,23 +12,18 @@ class DetailsViewController: UIViewController, NetworkingManagerDelegate {
     
     @IBOutlet weak var textView: UITextView!
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    var model: ItemModel?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        let tableViewController = navigationController?.viewControllers[0] as! TableViewController
-        let selectedIndex = tableViewController.tableView.indexPathForSelectedRow?.row ?? 0
-        let title = tableViewController.itemModels[selectedIndex].name
-        var newTitle = ""
-        for (index, letter) in title.enumerated() {
-            let newLetter = index % 2 == 0 ? String(letter).lowercased() : String(letter).uppercased()
-            newTitle += newLetter
-        }
+        configureBarTitle()
+        configureView()
         
-        self.title = newTitle
-        self.view.backgroundColor = tableViewController.itemModels[selectedIndex].color
+        guard let model = model else { return }
         
         NetworkingManager.sharedManager.delegate = self
-        NetworkingManager.sharedManager.downloadItemWithID("1")
+        NetworkingManager.sharedManager.downloadItemWithID(model.id)
     }
     
     func downloadedItems(_ items: [ItemModel]) {
@@ -37,6 +32,27 @@ class DetailsViewController: UIViewController, NetworkingManagerDelegate {
     
     func downloadedItemDetails(_ itemDetails: ItemDetailsModel) {
         textView.text = itemDetails.desc
+    }
+    
+    public func configure(with model: ItemModel) {
+        textView.text = model.name
+    }
+    
+    private func configureBarTitle() {
+        guard let model = model else { return }
+        let title = model.name
+        var newTitle = ""
+        for (index, letter) in title.enumerated() {
+            let newLetter = index % 2 == 0 ? String(letter).uppercased() : String(letter).lowercased()
+            newTitle += newLetter
+        }
+        
+        self.title = newTitle
+    }
+    
+    private func configureView() {
+        guard let model = model else { return }
+        self.view.backgroundColor = model.color
     }
 
 }

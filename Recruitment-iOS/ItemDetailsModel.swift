@@ -10,11 +10,11 @@ import UIKit
 
 class ItemDetailsModel: ItemModel {
 
-    var desc:String
+    var desc: String
     
-    init(name: String, color: UIColor, desc:String) {
+    init(id: String, name: String, color: UIColor, desc:String) {
         self.desc = desc
-        super.init(name: name, color: color)
+        super.init(id: id, name: name, color: color)
     }
     
 }

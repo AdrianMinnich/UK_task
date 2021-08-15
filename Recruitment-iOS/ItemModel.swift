@@ -10,10 +10,12 @@ import UIKit
 
 class ItemModel {
 
-    var name:String
-    var color:UIColor
+    var id: String
+    var name: String
+    var color: UIColor
     
-    init(name:String, color:UIColor) {
+    init(id: String, name: String, color: UIColor) {
+        self.id = id
         self.name  = name
         self.color = color
     }

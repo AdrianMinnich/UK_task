@@ -10,7 +10,7 @@ import UIKit
 
 class TableViewController: UITableViewController, NetworkingManagerDelegate {
     
-    var itemModels:[ItemModel] = []
+    var itemModels: [ItemModel] = []
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -31,12 +31,24 @@ class TableViewController: UITableViewController, NetworkingManagerDelegate {
     }
     
     func downloadedItems(_ items: [ItemModel]) {
-        self.itemModels = items
-        self.tableView.reloadData()
+        itemModels = items
+        reloadTableView()
     }
     
     func downloadedItemDetails(_ itemDetails: ItemDetailsModel) {
         
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
+        let model = itemModels[indexPath.row]
+        vc.model = model
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func reloadTableView() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
 }
