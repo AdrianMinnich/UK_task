@@ -28,6 +28,7 @@ class NetworkingManager: NSObject {
             var result:[ItemModel] = []
             for item in array {
                 let name = item["attributes"]?["name"] as? String
+                let preview = item["attributes"]?["preview"] as? String
                 let id = item["id"] as? String
                 let colorString = item["attributes"]?["color"] as? String
                 var color:UIColor?
@@ -39,7 +40,7 @@ class NetworkingManager: NSObject {
                 case "Purple": color = UIColor.purple
                 default: color = UIColor.black
                 }
-                let itemModel = ItemModel(id: id!, name: name!, color: color!)
+                let itemModel = ItemModel(id: id!, name: name!, preview: preview!, color: color!)
                 result.append(itemModel)
             }
             self.delegate?.downloadedItems(result)
@@ -52,6 +53,7 @@ class NetworkingManager: NSObject {
             let data = dictionary["data"]
             let attributes = data!["attributes"]! as! Dictionary<String, AnyObject>
             let name = attributes["name"] as? String
+            let preview = ""
             let id = data!["id"] as? String
             let colorString = attributes["color"] as? String
             var color:UIColor?
@@ -64,7 +66,7 @@ class NetworkingManager: NSObject {
             default: color = UIColor.black
             }
             let desc = attributes["desc"] as? String
-            let itemModelDetails = ItemDetailsModel(id: id!, name: name!, color: color!, desc: desc!)
+            let itemModelDetails = ItemDetailsModel(id: id!, name: name!, preview: preview, color: color!, desc: desc!)
             self.delegate?.downloadedItemDetails(itemModelDetails)
         }
     }

@@ -40,6 +40,7 @@ class TableViewController: UITableViewController, NetworkingManagerDelegate {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let vc = storyboard?.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
         let model = itemModels[indexPath.row]
         vc.model = model

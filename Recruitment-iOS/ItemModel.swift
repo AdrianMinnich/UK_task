@@ -12,11 +12,13 @@ class ItemModel {
 
     var id: String
     var name: String
+    var preview: String
     var color: UIColor
     
-    init(id: String, name: String, color: UIColor) {
+    init(id: String, name: String, preview: String, color: UIColor) {
         self.id = id
         self.name  = name
+        self.preview = preview
         self.color = color
     }
     
