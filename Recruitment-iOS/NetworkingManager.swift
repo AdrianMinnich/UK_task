@@ -8,31 +8,25 @@
 
 import UIKit
 
-protocol NetworkingManagerDelegate: NSObject {
-    
-    func downloadedItems(_ items:[ItemModel])
-    func downloadedItemDetails(_ itemDetails:ItemDetailsModel)
-    
-}
-
 class NetworkingManager: NSObject {
 
     static var sharedManager = NetworkingManager()
     
-    weak var delegate: NetworkingManagerDelegate?
-    
-    func downloadItems() {
+    public func downloadItems(completion: @escaping (Result<[ItemGeneralModel], Error>) -> Void) {
         request(filename: "Items.json") { dictionary in
             let data = dictionary["data"]
             let array = data as! Array<Dictionary<String, AnyObject>>
-            var result:[ItemModel] = []
+            var result:[ItemGeneralModel] = []
             for item in array {
-                let name = item["attributes"]?["name"] as? String
-                let preview = item["attributes"]?["preview"] as? String
-                let id = item["id"] as? String
-                let colorString = item["attributes"]?["color"] as? String
-                var color:UIColor?
-                switch colorString! {
+                guard let name = item["attributes"]?["name"] as? String,
+                      let preview = item["attributes"]?["preview"] as? String,
+                      let id = item["id"] as? String,
+                      let colorString = item["attributes"]?["color"] as? String else {
+                    completion(.failure(NetworkingManagerError.failedToFetchItems))
+                    return
+                }
+                var color = UIColor()
+                switch colorString {
                 case "Red": color = UIColor.red
                 case "Green": color = UIColor.green
                 case "Blue": color = UIColor.blue
@@ -40,24 +34,28 @@ class NetworkingManager: NSObject {
                 case "Purple": color = UIColor.purple
                 default: color = UIColor.black
                 }
-                let itemModel = ItemModel(id: id!, name: name!, preview: preview!, color: color!)
+                
+                let itemModel = ItemGeneralModel(id: id, name: name, color: color, preview: preview)
                 result.append(itemModel)
             }
-            self.delegate?.downloadedItems(result)
+            completion(.success(result))
         }
     }
     
-    func downloadItemWithID(_ id:String) {
+    public func downloadItemWithID(_ id: String, completion: @escaping (Result<ItemDetailsModel, Error>) -> Void) {
         let filename = "Item\(id).json"
         request(filename: filename) { dictionary in
-            let data = dictionary["data"]
-            let attributes = data!["attributes"]! as! Dictionary<String, AnyObject>
-            let name = attributes["name"] as? String
-            let preview = ""
-            let id = data!["id"] as? String
-            let colorString = attributes["color"] as? String
-            var color:UIColor?
-            switch colorString! {
+            guard let data = dictionary["data"],
+                  let attributes = data["attributes"]! as? Dictionary<String, AnyObject>,
+                  let name = attributes["name"] as? String,
+                  let id = data["id"] as? String,
+                  let desc = attributes["desc"] as? String,
+                  let colorString = attributes["color"] as? String else {
+                completion(.failure(NetworkingManagerError.failedToFetchItemWithID))
+                return
+            }
+            var color = UIColor()
+            switch colorString {
             case "Red": color = UIColor.red
             case "Green": color = UIColor.green
             case "Blue": color = UIColor.blue
@@ -65,9 +63,9 @@ class NetworkingManager: NSObject {
             case "Purple": color = UIColor.purple
             default: color = UIColor.black
             }
-            let desc = attributes["desc"] as? String
-            let itemModelDetails = ItemDetailsModel(id: id!, name: name!, preview: preview, color: color!, desc: desc!)
-            self.delegate?.downloadedItemDetails(itemModelDetails)
+            
+            let itemModelDetails = ItemDetailsModel(id: id, name: name, color: color, desc: desc)
+            completion(.success(itemModelDetails))
         }
     }
     
@@ -80,5 +78,9 @@ class NetworkingManager: NSObject {
             }
         }
     }
-    
+}
+
+public enum NetworkingManagerError: Error {
+    case failedToFetchItems
+    case failedToFetchItemWithID
 }

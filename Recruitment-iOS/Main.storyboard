@@ -68,9 +68,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <collectionViewLayout key="collectionViewLayout" id="Dxu-9e-waq" customClass="ItemModelLayout" customModule="Recruitment_iOS" customModuleProvider="target"/>
+                        <collectionViewLayout key="collectionViewLayout" id="Dxu-9e-waq" customClass="ItemGeneralModelLayout" customModule="Recruitment_iOS" customModuleProvider="target"/>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ItemModelCollectionViewCell" id="wRn-GC-Qc6" customClass="ItemModelCollectionViewCell" customModule="Recruitment_iOS" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ItemGeneralModelCollectionViewCell" id="wRn-GC-Qc6" customClass="ItemGeneralModelCollectionViewCell" customModule="Recruitment_iOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="191" height="187"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="nhv-BO-vpA">

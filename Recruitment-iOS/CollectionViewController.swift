@@ -8,29 +8,26 @@
 
 import UIKit
 
-class CollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, NetworkingManagerDelegate {
+class CollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
-    var itemModels: [ItemModel] = []
+    var itemModels: [ItemGeneralModel] = []
     
     override func viewDidLoad() {
-        if let layout = collectionView?.collectionViewLayout as? ItemModelLayout {
+        if let layout = collectionView?.collectionViewLayout as? ItemGeneralModelLayout {
           layout.delegate = self
+            
         }
         super.viewDidLoad()
+        fetchItems()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        NetworkingManager.sharedManager.delegate = self
-        NetworkingManager.sharedManager.downloadItems()
-    }
-
+    // MARK: - CollectionView methods
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return itemModels.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemModelCollectionViewCell.identifier, for: indexPath) as! ItemModelCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemGeneralModelCollectionViewCell.identifier, for: indexPath) as! ItemGeneralModelCollectionViewCell
         let model = itemModels[indexPath.item]
         cell.configure(with: model)
         return cell
@@ -51,15 +48,6 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         return CGSize(width: collectionViewSize / 2, height: collectionViewSize / 2)
     }
     
-    func downloadedItems(_ items: [ItemModel]) {
-        itemModels = items
-        reloadCollectionView()
-    }
-    
-    func downloadedItemDetails(_ itemDetails: ItemDetailsModel) {
-        
-    }
-    
     private func reloadCollectionView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
@@ -67,7 +55,25 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     }
 }
 
-extension CollectionViewController: ItemModelLayoutDelegate {
+// MARK: - Fetch data method
+extension CollectionViewController {
+    private func fetchItems() {
+        NetworkingManager.sharedManager.downloadItems() { [unowned self] result in
+            switch result {
+            case .success(let items):
+                self.itemModels = items
+                self.reloadCollectionView()
+                
+            case .failure(let error):
+                print("Failed to fetch items: \(error)")
+            }
+            
+        }
+    }
+}
+
+// MARK: - Dynamic height for cell
+extension CollectionViewController: ItemGeneralModelLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPreviewAtIndexPath indexPath: IndexPath) -> CGFloat {
         
         let item = itemModels[indexPath.row]

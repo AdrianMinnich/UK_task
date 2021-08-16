@@ -8,51 +8,56 @@
 
 import UIKit
 
-class DetailsViewController: UIViewController, NetworkingManagerDelegate {
+class DetailsViewController: UIViewController {
     
     @IBOutlet weak var textView: UITextView!
     
-    var model: ItemModel?
+    var model: ItemGeneralModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        configureBarTitle()
-        configureView()
-        
         guard let model = model else { return }
-        
-        NetworkingManager.sharedManager.delegate = self
-        NetworkingManager.sharedManager.downloadItemWithID(model.id)
-    }
-    
-    func downloadedItems(_ items: [ItemModel]) {
+        fetchItem(with: model.id)
+        configureView(with: model)
         
     }
     
-    func downloadedItemDetails(_ itemDetails: ItemDetailsModel) {
-        textView.text = itemDetails.desc
+    // MARK: - Configure view methods
+    private func configureView(with model: ItemGeneralModel) {
+        configureBackgroundColor(with: model)
+        configureBarTitle(with: model)
     }
     
-    public func configure(with model: ItemModel) {
-        textView.text = model.name
+    private func configureBackgroundColor(with model: ItemGeneralModel) {
+        self.view.backgroundColor = model.color
     }
     
-    private func configureBarTitle() {
-        guard let model = model else { return }
+    private func configureBarTitle(with model: ItemGeneralModel) {
         let title = model.name
         var newTitle = ""
         for (index, letter) in title.enumerated() {
             let newLetter = index % 2 == 0 ? String(letter).uppercased() : String(letter).lowercased()
             newTitle += newLetter
         }
-        
         self.title = newTitle
     }
     
-    private func configureView() {
-        guard let model = model else { return }
-        self.view.backgroundColor = model.color
+    public func configureTextView(with model: ItemDetailsModel) {
+        textView.text = model.desc
     }
+}
 
+// MARK: - Fetch data method
+extension DetailsViewController {
+    func fetchItem(with id: String) {
+        NetworkingManager.sharedManager.downloadItemWithID(id) { [unowned self] result in
+            switch result {
+            case .success(let item):
+                self.configureTextView(with: item)
+                
+            case .failure(let error):
+                print("Failed to fetch items: \(error)")
+            }
+        }
+    }
 }

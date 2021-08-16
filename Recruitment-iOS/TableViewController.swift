@@ -8,16 +8,16 @@
 
 import UIKit
 
-class TableViewController: UITableViewController, NetworkingManagerDelegate {
+class TableViewController: UITableViewController {
     
-    var itemModels: [ItemModel] = []
+    var itemModels: [ItemGeneralModel] = []
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        NetworkingManager.sharedManager.delegate = self
-        NetworkingManager.sharedManager.downloadItems()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchItems()
     }
     
+    // MARK: - TableView methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemModels.count
     }
@@ -28,15 +28,6 @@ class TableViewController: UITableViewController, NetworkingManagerDelegate {
         cell.backgroundColor = itemModel.color
         cell.textLabel?.text = itemModel.name
         return cell
-    }
-    
-    func downloadedItems(_ items: [ItemModel]) {
-        itemModels = items
-        reloadTableView()
-    }
-    
-    func downloadedItemDetails(_ itemDetails: ItemDetailsModel) {
-        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -50,6 +41,23 @@ class TableViewController: UITableViewController, NetworkingManagerDelegate {
     private func reloadTableView() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
+        }
+    }
+}
+
+// MARK: - Fetch data method
+extension TableViewController {
+    private func fetchItems() {
+        NetworkingManager.sharedManager.downloadItems() { [unowned self] result in
+            switch result {
+            case .success(let items):
+                self.itemModels = items
+                self.reloadTableView()
+                
+            case .failure(let error):
+                print("Failed to fetch items: \(error)")
+            }
+            
         }
     }
 }
