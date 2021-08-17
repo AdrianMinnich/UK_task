@@ -38,7 +38,7 @@ class TableViewController: UITableViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    private func reloadTableView() {
+    public func reloadTableView() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -47,7 +47,7 @@ class TableViewController: UITableViewController {
 
 // MARK: - Fetch data method
 extension TableViewController {
-    private func fetchItems() {
+    public func fetchItems() {
         NetworkingManager.sharedManager.downloadItems() { [unowned self] result in
             switch result {
             case .success(let items):

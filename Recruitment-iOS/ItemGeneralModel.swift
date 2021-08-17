@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ItemGeneralModel: ItemModel {
+class ItemGeneralModel: ItemModel, Equatable {
     
     var preview: String
     
@@ -16,4 +16,9 @@ class ItemGeneralModel: ItemModel {
         self.preview = preview
         super.init(id: id, name: name, color: color)
     }
+    
+    static func == (lhs: ItemGeneralModel, rhs: ItemGeneralModel) -> Bool {
+        return lhs.name == rhs.name && lhs.id == rhs.id && lhs.color == rhs.color && lhs.preview == rhs.preview
+    }
+    
 }
