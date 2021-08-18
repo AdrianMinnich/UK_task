@@ -38,7 +38,7 @@ class TableViewController: UITableViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    public func reloadTableView() {
+    private func reloadTableView() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -47,12 +47,12 @@ class TableViewController: UITableViewController {
 
 // MARK: - Fetch data method
 extension TableViewController {
-    public func fetchItems() {
-        NetworkingManager.sharedManager.downloadItems() { [unowned self] result in
+    private func fetchItems() {
+        NetworkingManager.sharedManager.downloadItems() { [weak self] result in
             switch result {
             case .success(let items):
-                self.itemModels = items
-                self.reloadTableView()
+                self?.itemModels = items
+                self?.reloadTableView()
                 
             case .failure(let error):
                 print("Failed to fetch items: \(error)")

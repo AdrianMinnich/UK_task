@@ -10,7 +10,7 @@ import UIKit
 
 class DetailsViewController: UIViewController {
     
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var textLabel: UILabel!
     
     var model: ItemGeneralModel?
     
@@ -19,7 +19,6 @@ class DetailsViewController: UIViewController {
         guard let model = model else { return }
         fetchItem(with: model.id)
         configureView(with: model)
-        
     }
     
     // MARK: - Configure view methods
@@ -42,18 +41,18 @@ class DetailsViewController: UIViewController {
         self.title = newTitle
     }
     
-    public func configureTextView(with model: ItemDetailsModel) {
-        textView.text = model.desc
+    private func configureTextLabel(with model: ItemDetailsModel) {
+        textLabel.text = model.desc
     }
 }
 
 // MARK: - Fetch data method
 extension DetailsViewController {
-    func fetchItem(with id: String) {
-        NetworkingManager.sharedManager.downloadItemWithID(id) { [unowned self] result in
+    private func fetchItem(with id: String) {
+        NetworkingManager.sharedManager.downloadItemWithID(id) { [weak self] result in
             switch result {
             case .success(let item):
-                self.configureTextView(with: item)
+                self?.configureTextLabel(with: item)
                 
             case .failure(let error):
                 print("Failed to fetch items: \(error)")

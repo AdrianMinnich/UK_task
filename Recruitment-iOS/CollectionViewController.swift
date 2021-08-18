@@ -58,11 +58,11 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 // MARK: - Fetch data method
 extension CollectionViewController {
     private func fetchItems() {
-        NetworkingManager.sharedManager.downloadItems() { [unowned self] result in
+        NetworkingManager.sharedManager.downloadItems() { [weak self] result in
             switch result {
             case .success(let items):
-                self.itemModels = items
-                self.reloadCollectionView()
+                self?.itemModels = items
+                self?.reloadCollectionView()
                 
             case .failure(let error):
                 print("Failed to fetch items: \(error)")

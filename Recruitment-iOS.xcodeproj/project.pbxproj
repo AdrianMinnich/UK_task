@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		845EA45526CD69C400BD3699 /* DetailsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845EA45426CD69C400BD3699 /* DetailsViewControllerTests.swift */; };
 		84B9924326C9A39500F76F40 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B9924226C9A39500F76F40 /* CollectionViewController.swift */; };
 		84B9925426CA806100F76F40 /* ItemGeneralModelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B9925326CA806100F76F40 /* ItemGeneralModelLayout.swift */; };
 		84B9925F26CAFFD700F76F40 /* ItemGeneralModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B9925E26CAFFD700F76F40 /* ItemGeneralModel.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		845EA45426CD69C400BD3699 /* DetailsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewControllerTests.swift; sourceTree = "<group>"; };
 		84B9924226C9A39500F76F40 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		84B9925126CA7B0200F76F40 /* ItemGeneralModelCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemGeneralModelCollectionViewCell.swift; sourceTree = "<group>"; };
 		84B9925326CA806100F76F40 /* ItemGeneralModelLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemGeneralModelLayout.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				84B9926F26CBE45D00F76F40 /* NetworkingManagerTests.swift */,
 				84B9927126CC1E2900F76F40 /* TableViewControllerTests.swift */,
 				84B9928126CC534000F76F40 /* CollectionViewControllerTests.swift */,
+				845EA45426CD69C400BD3699 /* DetailsViewControllerTests.swift */,
 			);
 			path = "Recruitment-iOSTests";
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 			files = (
 				84B9927026CBE45D00F76F40 /* NetworkingManagerTests.swift in Sources */,
 				84B9928226CC534100F76F40 /* CollectionViewControllerTests.swift in Sources */,
+				845EA45526CD69C400BD3699 /* DetailsViewControllerTests.swift in Sources */,
 				84B9927226CC1E2900F76F40 /* TableViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

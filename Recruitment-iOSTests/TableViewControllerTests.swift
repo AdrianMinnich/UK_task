@@ -29,8 +29,8 @@ class TableViewControllerTests: XCTestCase {
     }
 
     override func tearDown() {
-        super.tearDown()
         sut = nil
+        super.tearDown()
     }
     
     func testControllerShouldHaveTableView() {
@@ -62,20 +62,5 @@ class TableViewControllerTests: XCTestCase {
         let cell = sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 0, section: 0))
         XCTAssertEqual(cell.textLabel?.text, sut.itemModels[0].name)
         XCTAssertEqual(cell.backgroundColor, sut.itemModels[0].color)
-    }
-    
-    func testTappedCellShouldPresentDetailsViewController() {
-        sut.tableView(sut.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
-        
-        sut.tableView.delegate?.tableView?(sut.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
-    }
-    
-    func testControllerShouldFetchItems() {
-        let vc = TableViewController()
-        let expectation = expectation(description: "fetch items")
-        vc.viewDidLoad()
-        expectation.fulfill()
-        waitForExpectations(timeout: 2)
-        XCTAssertEqual(vc.itemModels, sut.itemModels)
     }
 }

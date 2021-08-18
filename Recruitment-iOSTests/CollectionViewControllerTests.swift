@@ -29,6 +29,42 @@ class CollectionViewControllerTests: XCTestCase {
     }
 
     override func tearDown() {
+        sut = nil
         super.tearDown()
+    }
+    
+    func testControllerShouldHaveCollectionView() {
+        XCTAssertNotNil(sut.collectionView)
+    }
+    
+    func testCollectionViewShouldHaveDelegate() {
+        XCTAssertNotNil(sut.collectionView.delegate)
+        XCTAssertTrue(sut.conforms(to: UICollectionViewDelegate.self))
+        XCTAssertTrue(sut.responds(to: #selector(sut.collectionView(_:didSelectItemAt:))))
+    }
+    
+    func testCollectionViewShouldHaveDataSource() {
+        XCTAssertNotNil(sut.collectionView.dataSource)
+        XCTAssertTrue(sut.conforms(to: UICollectionViewDataSource.self))
+        XCTAssertTrue(sut.responds(to: #selector(sut.collectionView(_:numberOfItemsInSection:))))
+        XCTAssertTrue(sut.responds(to: #selector(sut.collectionView(_:cellForItemAt:))))
+    }
+    
+    func testCollectionViewShoudHaveRightNumberOfRows() {
+        XCTAssertEqual(sut.itemModels.count, sut.collectionView.numberOfItems(inSection: 0))
+    }
+    
+    func testControllerShouldHaveItemModels() {
+        XCTAssertEqual(sut.itemModels.count, 5)
+    }
+    
+    func testItemShouldHaveTextAndColor() {
+        let cell = sut.collectionView(sut.collectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as! ItemGeneralModelCollectionViewCell
+        XCTAssertEqual(cell.titleLabel.text, sut.itemModels[0].name)
+        XCTAssertEqual(cell.previewLabel.text, sut.itemModels[0].preview)
+        XCTAssertEqual(cell.backgroundColor, sut.itemModels[0].color)
+    }
+    
+    func testFetchItems() {
     }
 }

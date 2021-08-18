@@ -11,10 +11,10 @@ import XCTest
 
 class NetworkingManagerTests: XCTestCase {
 
-    override func setUpWithError() throws {
+    override func setUp() {
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() {
     }
     
     func testShouldDownloadItems() {
